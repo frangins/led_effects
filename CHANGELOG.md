@@ -11,6 +11,8 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
 
 * Extract to its own repo.
+* Update to Rust 2021.
+* Forbid unsafe code.
 
 ## [superframe-1.0.0] - 2021-07-18
 
