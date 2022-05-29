@@ -1,11 +1,12 @@
 [package]
 name = "led_effects"
-version = "0.1.0"
+version = "0.1.0-dev"
 authors = [
     "Guillaume Cugnet <guillaume.cugnet@gmail.com>",
     "Jean-Philippe Cugnet <jean-philippe@cugnet.eu>",
 ]
 edition = "2018"
+description = "A collection of LED effects on top of smart-leds."
 
 [dependencies]
 embedded-time = "0.12.0"
@@ -19,8 +20,3 @@ version = "0.8.4"
 default-features = false
 features = ["small_rng"]
 optional = true
-
-# For `cargo fix` to work.
-[lib]
-test = false
-bench = false
