@@ -2,18 +2,9 @@
 
 with pkgs;
 
-let
-  gitflow = gitAndTools.gitflow;
-in
-
 mkShell {
   buildInputs = [
-    # Build toolchain
+    # Build toolchain.
     rustup
-
-    # Other tools
-    cargo-embed
-    git
-    gitflow
   ];
 }
