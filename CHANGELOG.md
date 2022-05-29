@@ -28,4 +28,4 @@ Versioning](https://semver.org/spec/v2.0.0.html).
     * unicolor transition, randow unicolor, and cyclic rainbow chasers.
 
 [0.1.0]: https://github.com/frangins/led_effects/compare/superframe-1.0.0...v0.1.0
-[superframe-1.0.0]: https://github.com/franging/led_effects/releases/tag/superframe-1.0.0
+[superframe-1.0.0]: https://github.com/frangins/led_effects/releases/tag/superframe-1.0.0
