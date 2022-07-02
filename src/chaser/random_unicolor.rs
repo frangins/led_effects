@@ -41,7 +41,6 @@ pub struct RandomUnicolor<D: Distribution<u32>, const N: usize> {
 
 impl<const N: usize> Chaser<N> for RandomUnicolor<Uniform<u32>, N> {
     fn set_time_config(&mut self, time_config: &TimeConfig) {
-        // IDEA: Also update the ongoing transition, live!
         self.refresh_rate = time_config.refresh_rate;
 
         let median_time_ms = time_config.transition_time.integer()
@@ -53,6 +52,9 @@ impl<const N: usize> Chaser<N> for RandomUnicolor<Uniform<u32>, N> {
         let v = median_time_ms * 2 / 3;
         self.transition_time_distr =
             Uniform::new(median_time_ms - v, median_time_ms + v);
+
+        // Update the ongoing transition.
+        self.transition.set_time_config(time_config);
     }
 }
 
