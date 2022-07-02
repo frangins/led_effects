@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic
 Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [Unreleased]
+
 ## [0.1.0] - 2022-05-29
 
 ### Changed
@@ -27,5 +29,6 @@ Versioning](https://semver.org/spec/v2.0.0.html).
     * unicolor, gradient and rainbow sequences,
     * unicolor transition, randow unicolor, and cyclic rainbow chasers.
 
+[Unreleased]: https://github.com/frangins/led_effects/compare/main...develop
 [0.1.0]: https://github.com/frangins/led_effects/compare/superframe-1.0.0...v0.1.0
 [superframe-1.0.0]: https://github.com/frangins/led_effects/releases/tag/superframe-1.0.0

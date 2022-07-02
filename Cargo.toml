@@ -1,6 +1,6 @@
 [package]
 name = "led_effects"
-version = "0.1.0"
+version = "0.1.1-dev"
 license = "GPL-3.0-only"
 authors = [
     "Guillaume Cugnet <guillaume.cugnet@gmail.com>",
