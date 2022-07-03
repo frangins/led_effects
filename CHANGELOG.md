@@ -8,11 +8,18 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 
 # [Unreleased]
 
+### Added
+
+* [chaser::RandomUnicolor] Add a `set_temperature` method to set the color
+  temperature.
+
 ### Changed
 
 * **BREAKING**: [chaser::RandomUnicolor] Do not implement the
   `SimpleRandomChaser` trait, because this is a constraining and not really
   useful abstraction.
+* **BREAKING**: [chaser::RandomUnicolor] Require a hue distribution in the
+  constructor.
 * [chaser::RandomUnicolor] Update the ongoing transition time config in
   `set_time_config`.
 

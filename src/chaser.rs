@@ -57,7 +57,7 @@ pub trait TwoParameterChaser<Color, const N: usize>: Chaser<N> {
 pub enum ChaserEnum<const N: usize> {
     RainbowUnicolor(RainbowChaser<Unicolor<Hsv, N>, N>),
     #[cfg(feature = "rand")]
-    RandomUnicolor(RandomUnicolor<Uniform<u32>, N>),
+    RandomUnicolor(RandomUnicolor<Uniform<i16>, Uniform<u32>, N>),
     DoubleRainbow(RainbowChaser<Rainbow<N>, N>),
 }
 
