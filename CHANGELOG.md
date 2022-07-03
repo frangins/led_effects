@@ -8,6 +8,23 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 
 # [Unreleased]
 
+### Changed
+
+* **BREAKING**: [chaser::RandomUnicolor] Do not implement the
+  `SimpleRandomChaser` trait, because this is a constraining and not really
+  useful abstraction.
+* [chaser::RandomUnicolor] Update the ongoing transition time config in
+  `set_time_config`.
+
+### Fixed
+
+* [chaser::UnicolorTransition] Fix an issue where they could be a division by
+  zero when the transition time is very low.
+
+### Removed
+
+* [chaser] Remove the `SimpleRandomChaser` trait.
+
 ## [0.1.0] - 2022-05-29
 
 ### Changed
