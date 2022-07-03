@@ -22,9 +22,7 @@ use rand::{
 };
 use smart_leds::{hsv::Hsv, RGB8};
 
-use super::{
-    Chaser, SimpleRandomChaser, TwoParameterChaser, UnicolorTransition,
-};
+use super::{Chaser, TwoParameterChaser, UnicolorTransition};
 use crate::{sequence::Unicolor, time::TimeConfig};
 
 /// A LED chaser that performs random transitions.
@@ -58,9 +56,7 @@ impl<const N: usize> Chaser<N> for RandomUnicolor<Uniform<u32>, N> {
     }
 }
 
-impl<const N: usize> SimpleRandomChaser<Uniform<u32>, N>
-    for RandomUnicolor<Uniform<u32>, N>
-{
+impl<const N: usize> RandomUnicolor<Uniform<u32>, N> {
     fn new(refresh_rate: Hertz, transition_time_distr: Uniform<u32>) -> Self {
         let mut rng = SmallRng::seed_from_u64(0);
 
