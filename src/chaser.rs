@@ -34,15 +34,9 @@ use crate::{
 };
 
 #[cfg(feature = "rand")]
-use embedded_time::rate::Hertz;
-
-#[cfg(feature = "rand")]
 use rand::distributions::Uniform;
 
 use smart_leds::hsv::Hsv;
-
-#[cfg(feature = "rand")]
-use rand::distributions::Distribution;
 
 /// A LED chaser.
 pub trait Chaser<const N: usize>: Iterator {
@@ -57,14 +51,6 @@ pub trait OneParameterChaser<Color, const N: usize>: Chaser<N> {
 /// A LED chaser with two parameters.
 pub trait TwoParameterChaser<Color, const N: usize>: Chaser<N> {
     fn new(color1: Color, color2: Color, time_config: &TimeConfig) -> Self;
-}
-
-/// A LED chaser with a simple random progression.
-#[cfg(feature = "rand")]
-pub trait SimpleRandomChaser<D: Distribution<u32>, const N: usize>:
-    Chaser<N>
-{
-    fn new(refresh_rate: Hertz, transition_time_distr: D) -> Self;
 }
 
 /// Container enum for one-parameter chasers.
