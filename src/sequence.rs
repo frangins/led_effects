@@ -27,7 +27,9 @@ pub use unicolor::Unicolor;
 use smart_leds::{hsv::Hsv, RGB8};
 
 /// A LED sequence.
-pub trait Sequence<const N: usize>: Iterator {}
+pub trait Sequence<const N: usize>: Iterator {
+    fn get_main_color(&self) -> RGB8;
+}
 
 /// A LED sequence with one parameter.
 pub trait OneParameterSequence<Color, const N: usize>: Sequence<N> {
@@ -64,7 +66,21 @@ impl<const N: usize> From<Rainbow<N>> for OneParameterSequenceEnum<N> {
     }
 }
 
-impl<const N: usize> Sequence<N> for OneParameterSequenceEnum<N> {}
+impl<const N: usize> Sequence<N> for OneParameterSequenceEnum<N> {
+    fn get_main_color(&self) -> RGB8 {
+        match self {
+            OneParameterSequenceEnum::UnicolorRgb8(sequence) => {
+                sequence.get_main_color()
+            }
+            OneParameterSequenceEnum::UnicolorHsv(sequence) => {
+                sequence.get_main_color()
+            }
+            OneParameterSequenceEnum::Rainbow(sequence) => {
+                sequence.get_main_color()
+            }
+        }
+    }
+}
 
 impl<const N: usize> Iterator for OneParameterSequenceEnum<N> {
     type Item = RGB8;

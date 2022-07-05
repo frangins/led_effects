@@ -28,7 +28,15 @@ pub struct Gradient<const N: usize> {
     counter: usize,
 }
 
-impl<const N: usize> Sequence<N> for Gradient<N> {}
+impl<const N: usize> Sequence<N> for Gradient<N> {
+    fn get_main_color(&self) -> RGB8 {
+        RGB8 {
+            r: self.start_color.r + (self.end_color.r - self.start_color.r) / 2,
+            g: self.start_color.g + (self.end_color.g - self.start_color.g) / 2,
+            b: self.start_color.b + (self.end_color.b - self.start_color.b) / 2,
+        }
+    }
+}
 
 impl<Color: Into<RGB8>, const N: usize> TwoParameterSequence<Color, N>
     for Gradient<N>

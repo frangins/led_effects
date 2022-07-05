@@ -29,6 +29,9 @@ pub struct Unicolor<Color, const N: usize> {
 impl<Color: Copy + Into<RGB8>, const N: usize> Sequence<N>
     for Unicolor<Color, N>
 {
+    fn get_main_color(&self) -> RGB8 {
+        self.color.into()
+    }
 }
 
 impl<Color: Copy + Into<RGB8>, const N: usize> OneParameterSequence<Color, N>

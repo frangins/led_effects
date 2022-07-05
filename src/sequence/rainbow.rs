@@ -26,7 +26,11 @@ pub struct Rainbow<const N: usize> {
     counter: usize,
 }
 
-impl<const N: usize> Sequence<N> for Rainbow<N> {}
+impl<const N: usize> Sequence<N> for Rainbow<N> {
+    fn get_main_color(&self) -> RGB8 {
+        self.first_color.into()
+    }
+}
 
 impl<Color: Into<Hsv>, const N: usize> OneParameterSequence<Color, N>
     for Rainbow<N>
