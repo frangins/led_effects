@@ -102,7 +102,5 @@ fn transition_step(start: u8, end: u8, step: u32, step_number: u32) -> u8 {
     let step_i32 = step as i32;
     let step_number_i32 = step_number as i32;
 
-    (start_i32
-        + (step_i32 * (end_i32 - start_i32)) / ((step_number_i32 - 1).max(1)))
-        as u8
+    (start_i32 + (step_i32 * (end_i32 - start_i32)) / step_number_i32) as u8
 }
