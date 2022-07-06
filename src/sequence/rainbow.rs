@@ -31,6 +31,8 @@ pub struct Rainbow<const N: usize> {
 pub struct RainbowConfig {
     /// The first color of the rainbow.
     pub first_color: Hsv,
+    /// The color range.
+    pub range: u8,
 }
 
 impl<const N: usize> Sequence<N> for Rainbow<N> {
@@ -52,7 +54,7 @@ impl<const N: usize> Iterator for Rainbow<N> {
         if self.counter < N {
             let color = Hsv {
                 hue: self.config.first_color.hue
-                    + (self.counter * (255 / N)) as u8,
+                    + (self.counter * (self.config.range as usize / N)) as u8,
                 ..self.config.first_color
             };
             self.counter += 1;

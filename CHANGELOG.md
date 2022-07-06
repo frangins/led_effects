@@ -16,6 +16,7 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 * [sequence] Add `GradientConfig`, `RainbowConfig` and `UnicolorConfig` to work
   with the new `Sequence` trait.
 * [sequence] Add a `Symmetry` sequence that transforms a sequence to a symmetry.
+* [sequence::Rainbow] Add the ability to control the color range of the rainbow.
 * [chaser::RandomUnicolor] Add a `set_temperature` method to set the color
   temperature.
 
