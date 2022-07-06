@@ -18,10 +18,12 @@
 
 mod gradient;
 mod rainbow;
+mod symmetry;
 mod unicolor;
 
 pub use gradient::{Gradient, GradientConfig};
 pub use rainbow::{Rainbow, RainbowConfig};
+pub use symmetry::Symmetry;
 pub use unicolor::{Unicolor, UnicolorConfig};
 
 use smart_leds::RGB8;
