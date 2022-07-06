@@ -20,76 +20,37 @@ mod gradient;
 mod rainbow;
 mod unicolor;
 
-pub use gradient::Gradient;
-pub use rainbow::Rainbow;
-pub use unicolor::Unicolor;
+pub use gradient::{Gradient, GradientConfig};
+pub use rainbow::{Rainbow, RainbowConfig};
+pub use unicolor::{Unicolor, UnicolorConfig};
 
-use smart_leds::{hsv::Hsv, RGB8};
+use smart_leds::RGB8;
 
 /// A LED sequence.
 pub trait Sequence<const N: usize>: Iterator {
-    fn get_main_color(&self) -> RGB8;
+    type Config: Copy;
+
+    /// Creates a new sequence with the given config.
+    fn new(config: Self::Config) -> Self;
+
+    /// Gets the configuration of the sequence.
+    fn config(&self) -> Self::Config;
 }
 
-/// A LED sequence with one parameter.
-pub trait OneParameterSequence<Color, const N: usize>: Sequence<N> {
-    fn new(color: Color) -> Self;
+/// A sequence configuration with a main color.
+pub trait ConfigWithMainColor: Copy {
+    /// Gets the main color.
+    fn main_color(&self) -> RGB8;
+
+    /// Sets the main color.
+    fn set_main_color(&mut self, color: RGB8);
 }
 
-/// A LED sequence with two parameters.
-pub trait TwoParameterSequence<Color, const N: usize>: Sequence<N> {
-    fn new(color1: Color, color2: Color) -> Self;
-}
+/// A sequence configuration with a secondary color.
+pub trait ConfigWithSecondaryColor: Copy {
+    /// Gets the secondary color.
+    fn secondary_color(&self) -> RGB8;
 
-/// Container enum for one-parameter sequences.
-pub enum OneParameterSequenceEnum<const N: usize> {
-    UnicolorRgb8(Unicolor<RGB8, N>),
-    UnicolorHsv(Unicolor<Hsv, N>),
-    Rainbow(Rainbow<N>),
-}
-
-impl<const N: usize> From<Unicolor<RGB8, N>> for OneParameterSequenceEnum<N> {
-    fn from(sequence: Unicolor<RGB8, N>) -> Self {
-        OneParameterSequenceEnum::UnicolorRgb8(sequence)
-    }
-}
-
-impl<const N: usize> From<Unicolor<Hsv, N>> for OneParameterSequenceEnum<N> {
-    fn from(sequence: Unicolor<Hsv, N>) -> Self {
-        OneParameterSequenceEnum::UnicolorHsv(sequence)
-    }
-}
-
-impl<const N: usize> From<Rainbow<N>> for OneParameterSequenceEnum<N> {
-    fn from(sequence: Rainbow<N>) -> Self {
-        OneParameterSequenceEnum::Rainbow(sequence)
-    }
-}
-
-impl<const N: usize> Sequence<N> for OneParameterSequenceEnum<N> {
-    fn get_main_color(&self) -> RGB8 {
-        match self {
-            OneParameterSequenceEnum::UnicolorRgb8(sequence) => {
-                sequence.get_main_color()
-            }
-            OneParameterSequenceEnum::UnicolorHsv(sequence) => {
-                sequence.get_main_color()
-            }
-            OneParameterSequenceEnum::Rainbow(sequence) => {
-                sequence.get_main_color()
-            }
-        }
-    }
-}
-
-impl<const N: usize> Iterator for OneParameterSequenceEnum<N> {
-    type Item = RGB8;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        match self {
-            OneParameterSequenceEnum::UnicolorRgb8(sequence) => sequence.next(),
-            OneParameterSequenceEnum::UnicolorHsv(sequence) => sequence.next(),
-            OneParameterSequenceEnum::Rainbow(sequence) => sequence.next(),
-        }
-    }
+    /// Sets the secondary color.
+    fn set_secondary_color(&mut self, color: RGB8);
 }

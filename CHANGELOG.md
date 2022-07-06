@@ -10,11 +10,27 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+* [sequence] Add a `ConfigWithMainColor` and `ConfigWithSecondaryColor` traits,
+  in order to set configuration capabilities to sequences. This replaces the old
+  `OneParameterSequence` and `TwoParameterSequence` traits.
+* [sequence] Add `GradientConfig`, `RainbowConfig` and `UnicolorConfig` to work
+  with the new `Sequence` trait.
 * [chaser::RandomUnicolor] Add a `set_temperature` method to set the color
   temperature.
 
 ### Changed
 
+* **BREAKING**: [sequence::Sequence] Add a `Config` associated type.
+* **BREAKING**: [sequence::Sequence] Add a `new` associated function to create a
+  sequence from a given `Self::Config`.
+* **BREAKING**: [sequence::Sequence] Add a `config` method to get the
+  configuration of the sequence.
+* **BREAKING**: [sequence::Gradient] Implement `Sequence::new` instead of
+  `TwoParameterSequence::new`
+* **BREAKING**: [sequence::Rainbow] Implement `Sequence::new` instead of
+  `OneParameterSequence::new`
+* **BREAKING**: [sequence::Unicolor] Implement `Sequence::new` instead of
+  `OneParameterSequence::new`
 * **BREAKING**: [chaser::RandomUnicolor] Do not implement the
   `SimpleRandomChaser` trait, because this is a constraining and not really
   useful abstraction.
@@ -30,6 +46,14 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Removed
 
+* [sequence] Remove the `OneParameterSequence` trait.
+* [sequence] Remove the `TwoParameterSequence` trait.
+* [sequence] Remove the `OneParameterSequenceEnum`. If you need such
+  abstraction, please implement it in your application code, with only chosen
+  sequence types.
+* [chaser] Remove the `ChaserEnum`.
+* [chaser] Remove the `OneParameterChaser` trait.
+* [chaser] Remove the `TwoParameterChaser` trait.
 * [chaser] Remove the `SimpleRandomChaser` trait.
 
 ## [0.1.0] - 2022-05-29

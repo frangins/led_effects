@@ -22,8 +22,11 @@ use rand::{
 };
 use smart_leds::{hsv::Hsv, RGB8};
 
-use super::{Chaser, TwoParameterChaser, UnicolorTransition};
-use crate::{sequence::Unicolor, time::TimeConfig};
+use super::{Chaser, UnicolorTransition};
+use crate::{
+    sequence::{Unicolor, UnicolorConfig},
+    time::TimeConfig,
+};
 
 /// A LED chaser that performs random transitions.
 pub struct RandomUnicolor<
@@ -153,5 +156,12 @@ fn generate_transition<const N: usize>(
     let transition_time = rng.sample(transition_time_distr).milliseconds();
     let time_config = TimeConfig::new(refresh_rate, transition_time);
 
-    UnicolorTransition::new(start_color, end_color, &time_config)
+    UnicolorTransition::new(
+        UnicolorConfig {
+            color: start_color.into(),
+        },
+        start_color,
+        end_color,
+        &time_config,
+    )
 }

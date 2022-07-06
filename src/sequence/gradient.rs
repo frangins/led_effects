@@ -16,37 +16,34 @@
 
 use smart_leds::RGB8;
 
-use super::{Sequence, TwoParameterSequence};
+use super::{ConfigWithMainColor, ConfigWithSecondaryColor, Sequence};
 
 /// A sequence in which the LEDs draw a gradient.
 pub struct Gradient<const N: usize> {
-    /// The departure color of the gradient.
-    start_color: RGB8,
-    /// The arrival color of the gradient.
-    end_color: RGB8,
+    /// The configuration.
+    config: GradientConfig,
     /// The counter.
     counter: usize,
 }
 
-impl<const N: usize> Sequence<N> for Gradient<N> {
-    fn get_main_color(&self) -> RGB8 {
-        RGB8 {
-            r: self.start_color.r + (self.end_color.r - self.start_color.r) / 2,
-            g: self.start_color.g + (self.end_color.g - self.start_color.g) / 2,
-            b: self.start_color.b + (self.end_color.b - self.start_color.b) / 2,
-        }
-    }
+/// The configuration for gradient sequences.
+#[derive(Debug, Clone, Copy)]
+pub struct GradientConfig {
+    /// The departure color of the gradient.
+    pub start_color: RGB8,
+    /// The arrival color of the gradient.
+    pub end_color: RGB8,
 }
 
-impl<Color: Into<RGB8>, const N: usize> TwoParameterSequence<Color, N>
-    for Gradient<N>
-{
-    fn new(start_color: Color, end_color: Color) -> Self {
-        Self {
-            start_color: start_color.into(),
-            end_color: end_color.into(),
-            counter: 0,
-        }
+impl<const N: usize> Sequence<N> for Gradient<N> {
+    type Config = GradientConfig;
+
+    fn new(config: Self::Config) -> Self {
+        Self { config, counter: 0 }
+    }
+
+    fn config(&self) -> Self::Config {
+        self.config
     }
 }
 
@@ -57,18 +54,18 @@ impl<const N: usize> Iterator for Gradient<N> {
         if self.counter < N {
             let color = RGB8 {
                 r: gradient_step::<N>(
-                    self.start_color.r,
-                    self.end_color.r,
+                    self.config.start_color.r,
+                    self.config.end_color.r,
                     self.counter,
                 ),
                 g: gradient_step::<N>(
-                    self.start_color.g,
-                    self.end_color.g,
+                    self.config.start_color.g,
+                    self.config.end_color.g,
                     self.counter,
                 ),
                 b: gradient_step::<N>(
-                    self.start_color.b,
-                    self.end_color.b,
+                    self.config.start_color.b,
+                    self.config.end_color.b,
                     self.counter,
                 ),
             };
@@ -77,6 +74,26 @@ impl<const N: usize> Iterator for Gradient<N> {
         } else {
             None
         }
+    }
+}
+
+impl ConfigWithMainColor for GradientConfig {
+    fn main_color(&self) -> RGB8 {
+        self.start_color
+    }
+
+    fn set_main_color(&mut self, color: RGB8) {
+        self.start_color = color;
+    }
+}
+
+impl ConfigWithSecondaryColor for GradientConfig {
+    fn secondary_color(&self) -> RGB8 {
+        self.end_color
+    }
+
+    fn set_secondary_color(&mut self, color: RGB8) {
+        self.end_color = color;
     }
 }
 
