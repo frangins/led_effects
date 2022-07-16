@@ -16,11 +16,13 @@
 
 //! A collection of LED sequences on top of `smart_leds`.
 
+mod duplicate;
 mod gradient;
 mod rainbow;
 mod symmetry;
 mod unicolor;
 
+pub use duplicate::{Duplicate, DuplicateConfig};
 pub use gradient::{Gradient, GradientConfig};
 pub use rainbow::{Rainbow, RainbowConfig};
 pub use symmetry::Symmetry;
