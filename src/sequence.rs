@@ -17,11 +17,13 @@
 //! A collection of LED sequences on top of `smart_leds`.
 
 mod gradient;
+mod pattern;
 mod rainbow;
 mod symmetry;
 mod unicolor;
 
 pub use gradient::{Gradient, GradientConfig};
+pub use pattern::{Pattern, PatternConfig};
 pub use rainbow::{Rainbow, RainbowConfig};
 pub use symmetry::Symmetry;
 pub use unicolor::{Unicolor, UnicolorConfig};
@@ -56,3 +58,28 @@ pub trait ConfigWithSecondaryColor: Copy {
     /// Sets the secondary color.
     fn set_secondary_color(&mut self, color: RGB8);
 }
+
+pub trait ConfigWithOffset: Copy {
+    /// Gets the minimum valid offsets.
+    fn min_offset(&self) -> i32;
+
+    /// Gets the maximum valid offsets.
+    fn max_offset(&self) -> i32;
+
+    /// Returns the current offset.
+    fn offset(&self) -> i32;
+
+    /// Increments the offset.
+    fn set_offset(&mut self, offset: i32) -> bool;
+
+    /// Increments the offset.
+    fn increment_offset(&mut self, offset: i32) -> bool;
+
+    fn offset_range(&self) -> u32 {
+        (self.max_offset() - self.min_offset()) as u32
+    }
+}
+
+// TODO: A chaser that cycles the offset.
+// TODO: Put all this in a Symmetry and we’re good :)
+// TODO: Generalise the RainbowChaser to work on any ConfigWithMainColor
