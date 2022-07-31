@@ -1,6 +1,6 @@
 // led_effects - A collection of LED effects on top of smart-leds.
 // Copyright (C) 2021 Guillaume Cugnet <guillaume@cugnet.eu>
-// Copyright (C) 2021 Jean-Philippe Cugnet <jean-philippe@cugnet.eu>
+// Copyright (C) 2021-2022 Jean-Philippe Cugnet <jean-philippe@cugnet.eu>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
