@@ -1,6 +1,6 @@
 // led_effects - A collection of LED effects on top of smart-leds.
 // Copyright (C) 2021 Guillaume Cugnet <guillaume@cugnet.eu>
-// Copyright (C) 2021 Jean-Philippe Cugnet <jean-philippe@cugnet.eu>
+// Copyright (C) 2021-2022 Jean-Philippe Cugnet <jean-philippe@cugnet.eu>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,14 +16,16 @@
 
 use smart_leds::RGB8;
 
-use super::{Chaser, TwoParameterChaser};
+use super::Chaser;
 use crate::{
-    sequence::{OneParameterSequence, Unicolor},
+    sequence::{ConfigWithMainColor, Sequence, Unicolor, UnicolorConfig},
     time::TimeConfig,
 };
 
 /// A simple transition between two colors.
 pub struct UnicolorTransition<const N: usize> {
+    /// The sequence configuration.
+    sequence_config: UnicolorConfig<RGB8>,
     /// The start color of the transition.
     start_color: RGB8,
     /// The end color of the transition.
@@ -49,11 +51,15 @@ impl<const N: usize> Chaser<N> for UnicolorTransition<N> {
     }
 }
 
-impl<C: Into<RGB8>, const N: usize> TwoParameterChaser<C, N>
-    for UnicolorTransition<N>
-{
-    fn new(start_color: C, end_color: C, time_config: &TimeConfig) -> Self {
+impl<const N: usize> UnicolorTransition<N> {
+    pub fn new(
+        sequence_config: UnicolorConfig<RGB8>,
+        start_color: impl Into<RGB8>,
+        end_color: impl Into<RGB8>,
+        time_config: &TimeConfig,
+    ) -> Self {
         Self {
+            sequence_config,
             start_color: start_color.into(),
             end_color: end_color.into(),
             step_number: time_config.transition_steps(),
@@ -88,8 +94,10 @@ impl<const N: usize> Iterator for UnicolorTransition<N> {
                 ),
             };
 
+            self.sequence_config.set_main_color(color);
             self.step += 1;
-            Some(Unicolor::new(color))
+
+            Some(Unicolor::new(self.sequence_config))
         } else {
             None
         }
@@ -102,6 +110,5 @@ fn transition_step(start: u8, end: u8, step: u32, step_number: u32) -> u8 {
     let step_i32 = step as i32;
     let step_number_i32 = step_number as i32;
 
-    (start_i32 + (step_i32 * (end_i32 - start_i32)) / (step_number_i32 - 1))
-        as u8
+    (start_i32 + (step_i32 * (end_i32 - start_i32)) / step_number_i32) as u8
 }

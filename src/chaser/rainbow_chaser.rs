@@ -1,6 +1,6 @@
 // led_effects - A collection of LED effects on top of smart-leds.
 // Copyright (C) 2021 Guillaume Cugnet <guillaume@cugnet.eu>
-// Copyright (C) 2021 Jean-Philippe Cugnet <jean-philippe@cugnet.eu>
+// Copyright (C) 2021-2022 Jean-Philippe Cugnet <jean-philippe@cugnet.eu>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,28 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-use core::marker::PhantomData;
-
 use smart_leds::hsv::Hsv;
 
-use super::{Chaser, OneParameterChaser};
-use crate::{sequence::OneParameterSequence, time::TimeConfig};
+use super::Chaser;
+use crate::{
+    sequence::{ConfigWithMainColor, Sequence},
+    time::TimeConfig,
+};
 
 /// A chaser that loops on the wheel of hues.
-pub struct RainbowChaser<S: OneParameterSequence<Hsv, N>, const N: usize> {
+pub struct RainbowChaser<S: Sequence<N>, const N: usize> {
+    /// The sequence configuration.
+    sequence_config: S::Config,
     /// The start color.
     start_color: Hsv,
     /// The number of steps in a loop.
     step_number: u32,
     /// The current step.
     step: u32,
-
-    // Placeholder for the sequence type.
-    _sequence: PhantomData<S>,
 }
 
-impl<S: OneParameterSequence<Hsv, N>, const N: usize> Chaser<N>
-    for RainbowChaser<S, N>
+impl<S: Sequence<N, Config = impl ConfigWithMainColor>, const N: usize>
+    Chaser<N> for RainbowChaser<S, N>
 {
     fn set_time_config(&mut self, time_config: &TimeConfig) {
         let step_number = time_config.transition_steps();
@@ -44,20 +44,20 @@ impl<S: OneParameterSequence<Hsv, N>, const N: usize> Chaser<N>
     }
 }
 
-impl<Color: Into<Hsv>, S: OneParameterSequence<Hsv, N>, const N: usize>
-    OneParameterChaser<Color, N> for RainbowChaser<S, N>
+impl<S: Sequence<N, Config = impl ConfigWithMainColor>, const N: usize>
+    RainbowChaser<S, N>
 {
-    fn new(start_color: Color, time_config: &TimeConfig) -> Self {
+    pub fn new(sequence_config: S::Config, time_config: &TimeConfig) -> Self {
         Self {
-            start_color: start_color.into(),
+            sequence_config,
+            start_color: sequence_config.main_color().into(),
             step_number: time_config.transition_steps(),
             step: 0,
-            _sequence: PhantomData,
         }
     }
 }
 
-impl<S: OneParameterSequence<Hsv, N>, const N: usize> Iterator
+impl<S: Sequence<N, Config = impl ConfigWithMainColor>, const N: usize> Iterator
     for RainbowChaser<S, N>
 {
     type Item = S;
@@ -70,9 +70,11 @@ impl<S: OneParameterSequence<Hsv, N>, const N: usize> Iterator
         let color = Hsv {
             hue: self.start_color.hue
                 + ((self.step * 255) / self.step_number) as u8,
-            ..self.start_color // sat: self.start_color.sat, val: self.start_color.val
+            ..self.start_color
         };
+        self.sequence_config.set_main_color(color.into());
         self.step += 1;
-        Some(S::new(color))
+
+        Some(S::new(self.sequence_config))
     }
 }
