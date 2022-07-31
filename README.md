@@ -9,6 +9,6 @@ Before contributing to this project, please read the
 
 ## License
 
-Copyright © 2021 Guillaume & Jean-Philippe Cugnet
+Copyright © 2021-2022 Guillaume & Jean-Philippe Cugnet
 
 This project is licensed under the [GNU General Public License 3.0](LICENSE).
